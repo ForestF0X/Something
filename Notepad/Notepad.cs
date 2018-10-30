@@ -17,28 +17,27 @@ namespace Notepad
             InitializeComponent();
         }
 
-        string OpenedFileName = string.Empty;
-
         //клик на пункт открыть
         private void MenuOpen_Click(object sender, EventArgs e)
         {
             statusLeft.Text = "Открытие...";
+            string filename;
             OpenFileDialog opf = new OpenFileDialog();
             opf.Filter = "Файл RTF|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы|*.*";
             opf.RestoreDirectory = true;
             if (opf.ShowDialog() == DialogResult.OK)
             {
-                using (StreamReader input = new StreamReader(opf.FileName, GetActiveEncode()))
-                {
-                    TextArea.Text = input.ReadToEnd();
-                    OpenedFileName = Path.GetFileName(opf.FileName);
-                }
+                filename = opf.FileName;
+                Text = filename;
+                Stream stream = opf.OpenFile();
+                TextArea.LoadFile(stream, RichTextBoxStreamType.RichText);
+                stream.Close();
             }
             statusLeft.Text = "Готов";
             statusRight.Text = "Сохранено";
         }
 
-        //смена кодировки
+        //смена кодировки, но работает ли она?
         Encoding GetActiveEncode()
         {
             foreach (ToolStripMenuItem item in MenuEncoding.DropDownItems)
@@ -73,8 +72,14 @@ namespace Notepad
         private void MenuSave_Click(object sender, EventArgs e)
         {
             statusLeft.Text = "Сохранение...";
-            SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Файл RTF|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы|*.*";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                TextArea.SaveFile(sfd.OpenFile(), RichTextBoxStreamType.RichText);
+            }
+            statusLeft.Text = "Готов";
+            statusRight.Text = "Сохранено";
+            /*sfd.Filter = "Файл RTF|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы|*.*";
             sfd.FileName = OpenedFileName;
             if (sfd.ShowDialog() == DialogResult.OK)
             {
@@ -87,14 +92,11 @@ namespace Notepad
                         return;
                     }
                 }
-                using (Stream stream = File.Create(SaveFilePath))
-                using (StreamWriter output = new StreamWriter(stream, GetActiveEncode()))
-                {
-                    output.Write(TextArea.Text);
-                }
+                using (Stream stream = File.Create(SaveFilePath));
+                TextArea.SaveFile(sfd.OpenFile(), RichTextBoxStreamType.RichText);
             }
             statusLeft.Text = "Готов";
-            statusRight.Text = "Сохранено";
+            statusRight.Text = "Сохранено";*/
         }
 
         //клик на пункт выход
@@ -105,25 +107,10 @@ namespace Notepad
             if (dialogResult == DialogResult.Yes)
             {
                 statusLeft.Text = "Сохранение...";
-                SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Filter = "Файл RTF|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы|*.*";
-                sfd.FileName = OpenedFileName;
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    string SaveFilePath = sfd.FileName;
-                    if (Path.GetExtension(SaveFilePath).Length == 0) SaveFilePath += ".txt";
-                    if (File.Exists(SaveFilePath))
-                    {
-                        if (MessageBox.Show(string.Format("Файл с именем {0} уже существует.\n\n Заменить?", Path.GetFileName(SaveFilePath)), "Замена файла", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes)
-                        {
-                            return;
-                        }
-                    }
-                    using (Stream stream = File.Create(SaveFilePath))
-                    using (StreamWriter output = new StreamWriter(stream, GetActiveEncode()))
-                    {
-                        output.Write(TextArea.Text);
-                    }
+                    TextArea.SaveFile(sfd.OpenFile(), RichTextBoxStreamType.RichText);
                     Application.Exit();
                 }
             }
@@ -167,25 +154,10 @@ namespace Notepad
                 if (dialogResult == DialogResult.Yes)
                 {
                     statusLeft.Text = "Сохранение...";
-                    SaveFileDialog sfd = new SaveFileDialog();
                     sfd.Filter = "Файл RTF|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы|*.*";
-                    sfd.FileName = OpenedFileName;
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
-                        string SaveFilePath = sfd.FileName;
-                        if (Path.GetExtension(SaveFilePath).Length == 0) SaveFilePath += ".txt";
-                        if (File.Exists(SaveFilePath))
-                        {
-                            if (MessageBox.Show(string.Format("Файл с именем {0} уже существует.\n\n Заменить?", Path.GetFileName(SaveFilePath)), "Замена файла", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes)
-                            {
-                                return;
-                            }
-                        }
-                        using (Stream stream = File.Create(SaveFilePath))
-                        using (StreamWriter output = new StreamWriter(stream, GetActiveEncode()))
-                        {
-                            output.Write(TextArea.Text);
-                        }
+                        TextArea.SaveFile(sfd.OpenFile(), RichTextBoxStreamType.RichText);
                         Application.Exit();
                     }
                     //если нажата отмена при сохранении
@@ -208,6 +180,7 @@ namespace Notepad
             }
         }
 
+        //смена шрифтов
         private void Font(object sender, EventArgs e)
         {
             //вызов диалога
@@ -221,7 +194,13 @@ namespace Notepad
             }
         }
 
+        //не трогать, это для нормальной работы всего что сверху
         private void fontDialog1_Apply(object sender, EventArgs e)
+        {
+
+        }
+
+        private void sfd_FileOk(object sender, CancelEventArgs e)
         {
 
         }

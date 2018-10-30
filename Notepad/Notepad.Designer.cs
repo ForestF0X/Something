@@ -52,6 +52,7 @@ namespace Notepad
             this.statusLeft = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusRight = new System.Windows.Forms.ToolStripStatusLabel();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
+            this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.Menu.SuspendLayout();
             this.Status.SuspendLayout();
             this.SuspendLayout();
@@ -183,7 +184,7 @@ namespace Notepad
             // FontChange
             // 
             this.FontChange.Name = "FontChange";
-            this.FontChange.Size = new System.Drawing.Size(180, 22);
+            this.FontChange.Size = new System.Drawing.Size(113, 22);
             this.FontChange.Text = "Шрифт";
             this.FontChange.Click += new System.EventHandler(this.Font);
             // 
@@ -231,6 +232,10 @@ namespace Notepad
             // 
             this.fontDialog1.Apply += new System.EventHandler(this.fontDialog1_Apply);
             // 
+            // sfd
+            // 
+            this.sfd.FileOk += new System.ComponentModel.CancelEventHandler(this.sfd_FileOk);
+            // 
             // Notepad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -275,6 +280,7 @@ namespace Notepad
         private ToolStripMenuItem Format;
         private ToolStripMenuItem FontChange;
         private FontDialog fontDialog1;
+        private SaveFileDialog sfd;
     }
 }
 
