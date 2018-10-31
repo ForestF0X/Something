@@ -18,3 +18,13 @@ C:\Users\Эрик\source\repos\Notepad\Notepad\obj\Debug\Notepad.csproj.Generate
 C:\Users\Эрик\source\repos\Notepad\Notepad\obj\Debug\Notepad.csproj.CoreCompileInputs.cache
 C:\Users\Эрик\source\repos\Notepad\Notepad\obj\Debug\Notepad.exe
 C:\Users\Эрик\source\repos\Notepad\Notepad\obj\Debug\Notepad.pdb
+C:\Users\eriko\Documents\GitHub\Something\Notepad\obj\Debug\Notepad.csprojAssemblyReference.cache
+C:\Users\eriko\Documents\GitHub\Something\Notepad\obj\Debug\Notepad.Notepad.resources
+C:\Users\eriko\Documents\GitHub\Something\Notepad\obj\Debug\Notepad.Properties.Resources.resources
+C:\Users\eriko\Documents\GitHub\Something\Notepad\obj\Debug\Notepad.csproj.GenerateResource.cache
+C:\Users\eriko\Documents\GitHub\Something\Notepad\obj\Debug\Notepad.csproj.CoreCompileInputs.cache
+C:\Users\eriko\Documents\GitHub\Something\Notepad\obj\Debug\Notepad.exe
+C:\Users\eriko\Documents\GitHub\Something\Notepad\obj\Debug\Notepad.pdb
+C:\Users\eriko\Documents\GitHub\Something\Notepad\bin\Debug\Notepad.exe.config
+C:\Users\eriko\Documents\GitHub\Something\Notepad\bin\Debug\Notepad.exe
+C:\Users\eriko\Documents\GitHub\Something\Notepad\bin\Debug\Notepad.pdb
