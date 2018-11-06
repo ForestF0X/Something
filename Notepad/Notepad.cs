@@ -96,21 +96,32 @@ namespace Notepad
         //клик на пункт выход
         private void MenuExit_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("Сохранить файл?", "Выход", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            //елси нажато да
-            if (dialogResult == DialogResult.Yes)
+            if (statusRight.Text == "Изменено")
             {
-                statusLeft.Text = "Сохранение...";
-                sfd.Filter = "Файл RTF|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы|*.*";
-                if (sfd.ShowDialog() == DialogResult.OK)
+                DialogResult dialogResult = MessageBox.Show("Сохранить файл?", "Выход", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                //елси нажато да
+                if (dialogResult == DialogResult.Yes)
                 {
-                    TextArea.SaveFile(sfd.OpenFile(), RichTextBoxStreamType.RichText);
+                    statusLeft.Text = "Сохранение...";
+                    sfd.Filter = "Файл RTF|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы|*.*";
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        TextArea.SaveFile(sfd.OpenFile(), RichTextBoxStreamType.RichText);
+                        Application.Exit();
+                    }
+                }
+                else if (dialogResult == DialogResult.No)
+                {
                     Application.Exit();
                 }
             }
-            else if (dialogResult == DialogResult.No)
+            else if (statusRight.Text == "Сохранено")
             {
-                Application.Exit();
+                //спрашивает стоит ли завершится
+                if (MessageBox.Show("Вы уверены что хотите закрыть программу?", "Выйти?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
             }
         }
 
@@ -143,33 +154,44 @@ namespace Notepad
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
-                DialogResult dialogResult = MessageBox.Show("Сохранить файл?", "Выход", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                //елси нажато да
-                if (dialogResult == DialogResult.Yes)
+                if (statusRight.Text == "Изменено")
                 {
-                    statusLeft.Text = "Сохранение...";
-                    sfd.Filter = "Файл RTF|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы|*.*";
-                    if (sfd.ShowDialog() == DialogResult.OK)
+                    DialogResult dialogResult = MessageBox.Show("Сохранить файл?", "Выход", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    //елси нажато да
+                    if (dialogResult == DialogResult.Yes)
                     {
-                        TextArea.SaveFile(sfd.OpenFile(), RichTextBoxStreamType.RichText);
-                        Application.Exit();
-                    }
-                    //если нажата отмена при сохранении
-                    else if (sfd.ShowDialog() == DialogResult.Cancel)
-                    {
-                        //устанавливает флаг отмены события в истину
-                        e.Cancel = true;
-                        //спрашивает стоит ли завершится
-                        if (MessageBox.Show("Вы уверены что хотите закрыть программу?", "Выйти?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                        statusLeft.Text = "Сохранение...";
+                        sfd.Filter = "Файл RTF|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы|*.*";
+                        if (sfd.ShowDialog() == DialogResult.OK)
                         {
+                            TextArea.SaveFile(sfd.OpenFile(), RichTextBoxStreamType.RichText);
                             Application.Exit();
                         }
+                        //если нажата отмена при сохранении
+                        else if (sfd.ShowDialog() == DialogResult.Cancel)
+                        {
+                            //устанавливает флаг отмены события в истину
+                            e.Cancel = true;
+                            //спрашивает стоит ли завершится
+                            if (MessageBox.Show("Вы уверены что хотите закрыть программу?", "Выйти?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                            {
+                                Application.Exit();
+                            }
+                        }
+                    }
+                    //если нажато нет
+                    else if (dialogResult == DialogResult.No)
+                    {
+                        Application.Exit();
                     }
                 }
-                //если нажато нет
-                else if (dialogResult == DialogResult.No)
+                else if(statusRight.Text=="Сохранено")
                 {
-                    Application.Exit();
+                    //спрашивает стоит ли завершится
+                    if (MessageBox.Show("Вы уверены что хотите закрыть программу?", "Выйти?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        Application.Exit();
+                    }
                 }
             }
         }
